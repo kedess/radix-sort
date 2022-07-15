@@ -1,6 +1,6 @@
 use std::vec;
 
-use radix_sort::{lsd_sort_u64, lsd_sort_u32, lsd_sort_u16};
+use radix_sort::{lsd_sort_u64, lsd_sort_u32, lsd_sort_u16, lsd_sort_u8};
 
 use std::time::Instant;
 
@@ -104,9 +104,28 @@ fn test_lsd_4(){
 fn test_lsd_5(){
     let mut arr = vec![0; 10_000_000];
     let mut reference = vec![0; 10_000_000];
+    let mut rng = Rand::new(0);
+    for idx in 0..10_000_000 {
+        let value = rng.rand_range(1, 255) as u8;
+        arr[idx] = value;
+        reference[idx] = value;
+    }
+    let start = Instant::now();
+    reference.sort();
+    println!("Standart sorting: {} ms", start.elapsed().as_millis());
+    let start = Instant::now();
+    lsd_sort_u8(&mut arr);
+    println!("Radix sorting: {:?} ms", start.elapsed().as_millis());
+    assert_eq!(arr, reference);
+}
+
+#[test]
+fn test_lsd_6(){
+    let mut arr = vec![0; 10_000_000];
+    let mut reference = vec![0; 10_000_000];
     let mut rng = Rand::new(3007);
     for idx in 0..10_000_000 {
-        let value = rng.rand_range(1, 40000000) as u32;
+        let value = rng.rand_range(1, 400000000) as u32;
         arr[idx] = value;
         reference[idx] = value;
     }
@@ -116,6 +135,5 @@ fn test_lsd_5(){
     let start = Instant::now();
     lsd_sort_u32(&mut arr);
     println!("Radix sorting: {:?} ms", start.elapsed().as_millis());
-    // assert_eq!(arr, reference);
-    assert_eq!(true, false);
+    assert_eq!(arr, reference);
 }

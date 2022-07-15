@@ -75,3 +75,21 @@ pub fn lsd_sort_u16(src: &mut[u16]) {
         src[idx] = dst[idx];
     }
 }
+
+pub fn lsd_sort_u8(src: &mut[u8]) {
+    let mut cnt = vec![0usize; 256];
+    for value in src.iter() {
+        cnt [*value as usize] += 1;
+    }
+    for idx in 1..256 {
+        cnt[idx] += cnt[idx - 1];
+    }
+    let mut tmp = vec![0u8;src.len()];
+    for value in src.iter().rev() {
+        tmp[cnt[*value as usize] - 1] = *value;
+        cnt[*value as usize] -= 1;
+    }
+    for idx in 0..src.len() {
+        src[idx] = tmp[idx];
+    }
+}
