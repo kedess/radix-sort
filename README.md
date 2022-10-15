@@ -16,6 +16,6 @@ fn main(){
 ### Cargo.toml
 ```bash
 [dependencies]
-radix-trie = {git = "https://github.com/mingendo/radix-sort.git", branch="master"}
+radix-trie = {git = "https://github.com/mingendo/radix-sort.git", branch="main"}
 ```
 
